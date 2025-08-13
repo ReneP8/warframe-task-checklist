@@ -9,7 +9,7 @@ RUN npm ci
 # Copy the rest and build
 COPY . .
 # If you have env vars needed at build time, pass them as --build-arg or .env.production
-RUN npm run preview
+RUN npm run build
 
 # ---- run stage ----
 FROM nginx:alpine
