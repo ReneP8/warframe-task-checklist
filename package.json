@@ -8,10 +8,6 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/warframe-tools/Task-Checklist.git"
-  },
   "keywords": [
     "warframe",
     "task",
@@ -21,10 +17,6 @@
   ],
   "author": "WarframeTools",
   "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/warframe-tools/Task-Checklist/issues"
-  },
-  "homepage": "https://warframetools.com/Task-Checklist/",
   "devDependencies": {
     "vite": "^6.3.5",
     "vite-plugin-html": "^3.2.2"
