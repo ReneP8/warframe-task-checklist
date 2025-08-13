@@ -19,8 +19,10 @@ RUN echo "=== Built files ===" && \
     ls -la pages/ && \
     echo "=== Assets directory ===" && \
     ls -la pages/assets/ 2>/dev/null || echo "No assets directory" && \
-    echo "=== index.html content ===" && \
-    head -30 pages/index.html
+    echo "=== index.html content (first 100 lines) ===" && \
+    head -100 pages/index.html && \
+    echo "=== Checking for Task-Checklist references ===" && \
+    grep -n "Task-Checklist" pages/index.html || echo "No Task-Checklist references found"
 
 # Production stage
 FROM nginx:alpine
@@ -35,7 +37,9 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN echo "=== Nginx html directory ===" && \
     ls -la /usr/share/nginx/html/ && \
     echo "=== Assets in nginx ===" && \
-    ls -la /usr/share/nginx/html/assets/ 2>/dev/null || echo "No assets in nginx"
+    ls -la /usr/share/nginx/html/assets/ 2>/dev/null || echo "No assets in nginx" && \
+    echo "=== Checking nginx index.html for Task-Checklist references ===" && \
+    grep -n "Task-Checklist" /usr/share/nginx/html/index.html || echo "No Task-Checklist references in nginx html"
 
 # Ensure proper permissions
 RUN chmod -R 755 /usr/share/nginx/html
