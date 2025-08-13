@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   warframe-checklist:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: warframe-task-checklist
     restart: unless-stopped
     ports:
