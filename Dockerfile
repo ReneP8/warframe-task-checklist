@@ -25,8 +25,9 @@ RUN echo "=== Built files ===" && \
 # Production stage
 FROM nginx:alpine
 
-# Copy built files from Vite output directory (pages)
-COPY --from=build /app/pages /usr/share/nginx/html
+# Create the Task-Checklist directory and copy built files there
+RUN mkdir -p /usr/share/nginx/html/Task-Checklist
+COPY --from=build /app/pages /usr/share/nginx/html/Task-Checklist
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
@@ -34,8 +35,10 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Debug: List what's in nginx html directory
 RUN echo "=== Nginx html directory ===" && \
     ls -la /usr/share/nginx/html/ && \
+    echo "=== Task-Checklist directory ===" && \
+    ls -la /usr/share/nginx/html/Task-Checklist/ && \
     echo "=== Assets in nginx ===" && \
-    ls -la /usr/share/nginx/html/assets/ 2>/dev/null || echo "No assets in nginx"
+    ls -la /usr/share/nginx/html/Task-Checklist/assets/ 2>/dev/null || echo "No assets in nginx"
 
 # Ensure proper permissions
 RUN chmod -R 755 /usr/share/nginx/html
