@@ -15,7 +15,7 @@ RUN npm run build
 FROM nginx:alpine
 # Nginx config for SPA routing (history fallback to index.html)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-# Copy the Vite build output
-COPY --from=builder /app/dist /usr/share/nginx/html
+# Copy the Vite build output from pages directory
+COPY --from=builder /app/pages /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
