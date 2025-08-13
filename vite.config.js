@@ -24,6 +24,5 @@ export default defineConfig({
   build: {
     outDir: '../pages', // Output to 'pages' at the project root
     emptyOutDir: true,
-    assetsDir: 'assets', // Assets will be placed in 'pages/assets'
   },
 })
