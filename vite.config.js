@@ -6,7 +6,7 @@ import path from 'node:path'
 
 export default defineConfig({
   root: 'sources',
-  base: '/Task-Checklist/', // Keep this for subdirectory serving
+  base: '/', // Deploy at root path
 
   plugins: [
     createHtmlPlugin({
