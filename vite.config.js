@@ -6,7 +6,7 @@ import path from 'node:path'
 
 export default defineConfig({
   root: 'sources',
-  base: './', // Changed from '/Task-Checklist/' to './' for Docker deployment
+  base: '/Task-Checklist/', // Changed from '/Task-Checklist/' to './' for Docker deployment
 
   plugins: [
     createHtmlPlugin({
