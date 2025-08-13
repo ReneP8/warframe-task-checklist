@@ -14,6 +14,14 @@ COPY . .
 # Build the application using Vite
 RUN npm run build
 
+# Debug: List what was built
+RUN echo "=== Built files ===" && \
+    ls -la pages/ && \
+    echo "=== Assets directory ===" && \
+    ls -la pages/assets/ 2>/dev/null || echo "No assets directory" && \
+    echo "=== index.html content ===" && \
+    head -30 pages/index.html
+
 # Production stage
 FROM nginx:alpine
 
@@ -22,6 +30,12 @@ COPY --from=build /app/pages /usr/share/nginx/html
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Debug: List what's in nginx html directory
+RUN echo "=== Nginx html directory ===" && \
+    ls -la /usr/share/nginx/html/ && \
+    echo "=== Assets in nginx ===" && \
+    ls -la /usr/share/nginx/html/assets/ 2>/dev/null || echo "No assets in nginx"
 
 # Ensure proper permissions
 RUN chmod -R 755 /usr/share/nginx/html
