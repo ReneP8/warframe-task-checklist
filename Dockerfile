@@ -1,45 +1,21 @@
-FROM node:18-alpine as build
-
+# ---- build stage ----
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copy package files
+# Install deps first for better caching
 COPY package*.json ./
-
-# Install ALL dependencies (including devDependencies for build)
 RUN npm ci
 
-# Copy source files
+# Copy the rest and build
 COPY . .
-
-# Build the application using Vite
+# If you have env vars needed at build time, pass them as --build-arg or .env.production
 RUN npm run build
 
-# Debug: List what was built
-RUN echo "=== Built files ===" && \
-    ls -la pages/ && \
-    echo "=== Assets directory ===" && \
-    ls -la pages/assets/ 2>/dev/null || echo "No assets directory" && \
-    echo "=== index.html content ===" && \
-    head -30 pages/index.html
-
-# Production stage
+# ---- run stage ----
 FROM nginx:alpine
-
-# Copy built files directly to nginx html root
-COPY --from=build /app/pages /usr/share/nginx/html
-
-# Copy nginx configuration
+# Nginx config for SPA routing (history fallback to index.html)
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Debug: List what's in nginx html directory
-RUN echo "=== Nginx html directory ===" && \
-    ls -la /usr/share/nginx/html/ && \
-    echo "=== Assets in nginx ===" && \
-    ls -la /usr/share/nginx/html/assets/ 2>/dev/null || echo "No assets in nginx"
-
-# Ensure proper permissions
-RUN chmod -R 755 /usr/share/nginx/html
-
+# Copy the Vite build output
+COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
-
 CMD ["nginx", "-g", "daemon off;"]
